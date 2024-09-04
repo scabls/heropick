@@ -18,37 +18,16 @@
           <p>定位</p>
         </div>
         <div class="types">
-          <div class="type-list">
-            <label
-              v-for="item in payType"
+          <div class="type-list" v-for="(value,key) in types" :key="key">
+            <div
+              v-for="item in value"
               :key="item.id"
               class="radio"
-              :class="{checked:item.id==pickedId}"
+              :class="{checked:item.id==query.id}"
+              @click="changeType(key,item.id)"
             >
-              <input
-                type="radio"
-                v-model="pickedId"
-                @click="pickedType=item.type"
-                :value="item.id"
-              />
               {{item.content}}
-            </label>
-          </div>
-          <div class="type-list">
-            <label
-              v-for="item in heroType"
-              :key="item.id"
-              class="radio"
-              :class="{checked:item.id==pickedId}"
-            >
-              <input
-                type="radio"
-                v-model="pickedId"
-                @click="pickedType=item.type"
-                :value="item.id"
-              />
-              {{item.content}}
-            </label>
+            </div>
           </div>
         </div>
         <div class="keyword">

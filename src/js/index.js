@@ -3,21 +3,25 @@ const app = createApp({
   data() {
     return {
       heroArr: [],
-      payType: [
-        { id: 10, type: 'pay_type', content: '本周免费' },
-        { id: 11, type: 'pay_type', content: '新手推荐' },
-      ],
-      heroType: [
-        { id: 100, type: 'all', content: '全部' },
-        { id: 3, type: 'hero_type', content: '坦克' },
-        { id: 1, type: 'hero_type', content: '战士' },
-        { id: 4, type: 'hero_type', content: '刺客' },
-        { id: 2, type: 'hero_type', content: '法师' },
-        { id: 5, type: 'hero_type', content: '射手' },
-        { id: 6, type: 'hero_type', content: '辅助' },
-      ],
-      pickedId: 100,
-      pickedType: 'all',
+      types: {
+        pay_type: [
+          { id: 10, content: '本周免费' },
+          { id: 11, content: '新手推荐' },
+        ],
+        hero_type: [
+          { id: 0, content: '全部' },
+          { id: 3, content: '坦克' },
+          { id: 1, content: '战士' },
+          { id: 4, content: '刺客' },
+          { id: 2, content: '法师' },
+          { id: 5, content: '射手' },
+          { id: 6, content: '辅助' },
+        ],
+      },
+      query: {
+        type: '',
+        id: 0,
+      },
       search: '',
     }
   },
@@ -40,20 +44,26 @@ const app = createApp({
             return hero
           })
       else
-        return this.pickedId == 100
+        return this.query.id == 0
           ? this.heroArr
           : this.heroArr.filter(
               hero =>
-                hero[this.pickedType] == this.pickedId ||
-                hero[this.pickedType + '2'] == this.pickedId
+                hero[this.query.type] == this.query.id ||
+                hero[this.query.type + '2'] == this.query.id
             )
+    },
+  },
+  methods: {
+    changeType(type, id) {
+      this.query.type = type
+      this.query.id = id
     },
   },
   watch: {
     search: {
       flush: 'post',
       handler() {
-        ;(this.pickedId = 100), (this.pickedType = 'all')
+        ;(this.query.id = 0), (this.query.type = '')
       },
     },
   },

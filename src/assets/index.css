@@ -87,9 +87,6 @@ body {
   display: flex;
   padding-left: 20px;
 }
-.search .types .type-list input {
-  display: none;
-}
 
 /* 上侧search右下角的搜索框 */
 .search .keyword {
