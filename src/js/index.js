@@ -29,7 +29,16 @@ const app = createApp({
       return ename => `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${ename}/${ename}.jpg`
     },
     filteredHeroArr() {
-      if (this.search) return this.heroArr.filter(hero => hero.cname.includes(this.search))
+      if (this.search)
+        return _.cloneDeep(this.heroArr)
+          .filter(hero => hero.cname.includes(this.search))
+          .map(hero => {
+            hero.cname = hero.cname.replace(
+              this.search,
+              `<span style="color:red">${this.search}</span>`
+            )
+            return hero
+          })
       else
         return this.pickedId == 100
           ? this.heroArr
@@ -45,22 +54,13 @@ const app = createApp({
       flush: 'post',
       handler() {
         ;(this.pickedId = 100), (this.pickedType = 'all')
-        const cnames = document.querySelectorAll('.list a>span')
-        cnames.forEach(name => (name.innerHTML = name.innerText))
-        if (this.search) {
-          cnames.forEach(
-            name =>
-              (name.innerHTML = name.innerHTML.replace(
-                this.search,
-                `<span style="color:red">${this.search}</span>`
-              ))
-          )
-        }
       },
     },
   },
+  mounted() {
+    axios
+      .get('http://project.x-zd.net:3001/apis/herolist')
+      .then(res => (this.heroArr = res.data.data.reverse()))
+  },
 })
-const instance = app.mount('.container')
-axios
-  .get('http://project.x-zd.net:3001/apis/herolist')
-  .then(res => (instance.heroArr = res.data.data.reverse()))
+app.mount('.container')

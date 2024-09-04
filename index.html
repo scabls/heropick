@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="./src/assets/index.css" />
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+    <script src="./node_modules/vue/dist/vue.global.js"></script>
+    <script src="./node_modules/lodash/lodash.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -60,15 +63,13 @@
         <li v-for="hero in filteredHeroArr" :key="hero.ename">
           <a :href="href(hero.ename)" target="_blank">
             <img :src="src(hero.ename)" />
-            <span>{{hero.cname}}</span>
+            <span v-html="hero.cname"></span>
           </a>
         </li>
       </ul>
     </div>
 
     <!-- 引入js文件 -->
-    <script src="./node_modules/axios/dist/axios.min.js"></script>
-    <script src="./node_modules/vue/dist/vue.global.js"></script>
     <script src="./src/js/index.js"></script>
   </body>
 </html>
