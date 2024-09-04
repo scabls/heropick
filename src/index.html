@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- 上面搜索部分 -->
+      <div class="search">
+        <div class="title">
+          <p>综合</p>
+          <p>定位</p>
+        </div>
+        <div class="types">
+          <div class="type-list">
+            <label
+              v-for="item in payType"
+              :key="item.id"
+              class="radio"
+              :class="{checked:item.id==pickedId}"
+            >
+              <input
+                type="radio"
+                v-model="pickedId"
+                @click="pickedType=item.type"
+                :value="item.id"
+              />
+              {{item.content}}
+            </label>
+          </div>
+          <div class="type-list">
+            <label
+              v-for="item in heroType"
+              :key="item.id"
+              class="radio"
+              :class="{checked:item.id==pickedId}"
+            >
+              <input
+                type="radio"
+                v-model="pickedId"
+                @click="pickedType=item.type"
+                :value="item.id"
+              />
+              {{item.content}}
+            </label>
+          </div>
+        </div>
+        <div class="keyword">
+          <div class="input">
+            <input type="text" placeholder="请输入你要搜索的英雄名" v-model.trim="search" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 下面列表展示部分 -->
+      <ul class="list">
+        <li v-for="hero in filteredHeroArr" :key="hero.ename">
+          <a :href="href(hero.ename)" target="_blank">
+            <img :src="src(hero.ename)" />
+            <span>{{hero.cname}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 引入js文件 -->
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+    <script src="./node_modules/vue/dist/vue.global.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>
