@@ -32,7 +32,12 @@
         </div>
         <div class="keyword">
           <div class="input">
-            <input type="text" placeholder="请输入你要搜索的英雄名" v-model.trim="search" />
+            <input
+              type="text"
+              placeholder="请输入你要搜索的英雄名"
+              :value="keyword"
+              @input="changeKeyword"
+            />
           </div>
         </div>
       </div>

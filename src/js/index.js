@@ -22,7 +22,7 @@ const app = createApp({
         type: '',
         id: 0,
       },
-      search: '',
+      keyword: '',
     }
   },
   computed: {
@@ -33,44 +33,37 @@ const app = createApp({
       return ename => `https://game.gtimg.cn/images/yxzj/img201606/heroimg/${ename}/${ename}.jpg`
     },
     filteredHeroArr() {
-      if (this.search)
+      const { type, id } = this.query
+      const keyword = this.keyword
+      if (keyword)
         return _.cloneDeep(this.heroArr)
-          .filter(hero => hero.cname.includes(this.search))
+          .filter(hero => hero.cname.includes(keyword))
           .map(hero => {
-            hero.cname = hero.cname.replace(
-              this.search,
-              `<span style="color:red">${this.search}</span>`
-            )
+            hero.cname = hero.cname.replace(keyword, `<span style="color:red">${keyword}</span>`)
             return hero
           })
       else
-        return this.query.id == 0
+        return id == 0
           ? this.heroArr
-          : this.heroArr.filter(
-              hero =>
-                hero[this.query.type] == this.query.id ||
-                hero[this.query.type + '2'] == this.query.id
-            )
-    },
-  },
-  methods: {
-    changeType(type, id) {
-      this.query.type = type
-      this.query.id = id
-    },
-  },
-  watch: {
-    search: {
-      flush: 'post',
-      handler() {
-        ;(this.query.id = 0), (this.query.type = '')
-      },
+          : this.heroArr.filter(hero => hero[type] == id || hero[type + '2'] == id)
     },
   },
   mounted() {
     axios
       .get('http://project.x-zd.net:3001/apis/herolist')
       .then(res => (this.heroArr = res.data.data.reverse()))
+  },
+  methods: {
+    changeType(type, id) {
+      this.query.type = type
+      this.query.id = id
+      this.keyword = ''
+    },
+    changeKeyword(e) {
+      this.keyword = e.target.value.trim()
+      this.query.type = ''
+      this.query.id = 0
+    },
   },
 })
 app.mount('.container')
